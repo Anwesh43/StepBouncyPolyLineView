@@ -208,4 +208,12 @@ class StepBouncyPolyLineView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+        fun create(activty : Activity) : StepBouncyPolyLineView {
+            val view : StepBouncyPolyLineView = StepBouncyPolyLineView(activty)
+            activty.setContentView(view)
+            return view
+        }
+    }
 }
