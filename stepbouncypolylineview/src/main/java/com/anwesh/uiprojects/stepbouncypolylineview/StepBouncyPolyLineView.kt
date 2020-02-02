@@ -30,7 +30,7 @@ fun Canvas.drawStepBouncyPolyLine(i : Int, scale : Float, size : Float, paint : 
     val sf : Float = scale.sinify().divideScale(i, lines)
     val deg : Float = 360f / lines
     save()
-    rotate(deg * sf)
+    rotate(deg * sf + i * deg)
     drawLine(0f, 0f, 0f, -size, paint)
     restore()
 }
@@ -129,7 +129,7 @@ class StepBouncyPolyLineView(ctx : Context) : View(ctx) {
         private var prev : SBPLNode? = null
 
         init {
-
+            addNeighbor()
         }
 
         fun addNeighbor() {
@@ -141,6 +141,7 @@ class StepBouncyPolyLineView(ctx : Context) : View(ctx) {
 
         fun draw(canvas : Canvas, paint : Paint) {
             canvas.drawSBPLNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
         }
 
         fun update(cb : (Float) -> Unit) {
@@ -166,11 +167,12 @@ class StepBouncyPolyLineView(ctx : Context) : View(ctx) {
 
     data class StepBouncyPolyLine(var i : Int) {
 
-        private var curr : SBPLNode = SBPLNode(0)
+        private val root : SBPLNode = SBPLNode(0)
+        private var curr : SBPLNode = root
         private var dir : Int = 1
 
         fun draw(canvas : Canvas, paint : Paint) {
-            curr.draw(canvas, paint)
+            root.draw(canvas, paint)
         }
 
         fun update(cb : (Float) -> Unit) {
