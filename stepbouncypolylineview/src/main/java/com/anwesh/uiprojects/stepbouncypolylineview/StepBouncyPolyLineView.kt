@@ -185,4 +185,26 @@ class StepBouncyPolyLineView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : StepBouncyPolyLineView) {
+
+        private val sbpl : StepBouncyPolyLine = StepBouncyPolyLine(0)
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            sbpl.draw(canvas, paint)
+            animator.animate {
+                sbpl.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sbpl.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
